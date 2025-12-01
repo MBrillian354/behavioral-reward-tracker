@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Icon } from '@/components/ui/icon';
 import { StreakBadge } from '@/components/shared/streak-badge';
 import { Task, TaskLog } from '@/lib/supabase/types';
 import { formatRupiah } from '@/lib/utils/currency';
@@ -21,6 +22,14 @@ interface TaskState {
   checked: boolean;
   quantity: number;
 }
+
+// Map categories to Material Icons
+const categoryIcons: Record<string, string> = {
+  daily_routine: 'wb_sunny',
+  self_improvement: 'menu_book',
+  household: 'home',
+  social_emotional: 'favorite',
+};
 
 export function DailyChecklist({ tasks, existingLogs, userId, date, streaks }: DailyChecklistProps) {
   const [taskStates, setTaskStates] = useState<Record<string, TaskState>>({});
@@ -112,7 +121,7 @@ export function DailyChecklist({ tasks, existingLogs, userId, date, streaks }: D
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Today's Summary */}
       <Card variant="filled">
         <CardContent className="py-4">
@@ -128,10 +137,7 @@ export function DailyChecklist({ tasks, existingLogs, userId, date, streaks }: D
         <Card key={category}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              {category === 'daily_routine' && '🌅'}
-              {category === 'self_improvement' && '📚'}
-              {category === 'household' && '🏠'}
-              {category === 'social_emotional' && '💝'}
+              <Icon name={categoryIcons[category] || 'category'} className="text-[var(--md-primary)]" />
               {getCategoryLabel(category)}
             </CardTitle>
           </CardHeader>
@@ -154,7 +160,7 @@ export function DailyChecklist({ tasks, existingLogs, userId, date, streaks }: D
                   >
                     <div className="flex items-start gap-3">
                       {/* Checkbox */}
-                      <label className="flex items-center cursor-pointer">
+                      <label className="flex items-center cursor-pointer touch-target">
                         <input
                           type="checkbox"
                           checked={state.checked}
@@ -165,7 +171,7 @@ export function DailyChecklist({ tasks, existingLogs, userId, date, streaks }: D
                       </label>
 
                       {/* Task Info */}
-                      <div className="flex-1">
+                      <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className={`md-title-small ${state.checked ? 'line-through opacity-70' : ''}`}>
                             {task.name}
@@ -174,7 +180,10 @@ export function DailyChecklist({ tasks, existingLogs, userId, date, streaks }: D
                             <StreakBadge streak={streak} requiredDays={task.streak_days} />
                           )}
                           {isSaved && (
-                            <Badge variant="success" size="small">✓ {tCommon('saved')}</Badge>
+                            <Badge variant="success" size="small">
+                              <Icon name="check" size="small" className="mr-1" />
+                              {tCommon('saved')}
+                            </Badge>
                           )}
                         </div>
                         
@@ -184,7 +193,7 @@ export function DailyChecklist({ tasks, existingLogs, userId, date, streaks }: D
                           </p>
                         )}
 
-                        <div className="flex items-center gap-2 mt-2">
+                        <div className="flex items-center gap-2 mt-2 flex-wrap">
                           <Badge variant="info" size="small">
                             {formatRupiah(task.reward_amount)}
                             {task.reward_type === 'per_unit' && ` / ${task.units_required} ${task.unit_label}`}

@@ -2,6 +2,7 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table';
+import { Icon } from '@/components/ui/icon';
 import { formatRupiah } from '@/lib/utils/currency';
 import { formatDateIndonesian } from '@/lib/utils/dates';
 import { TaskLogWithTask, DeductionLogWithDeduction } from '@/lib/supabase/types';
@@ -16,15 +17,18 @@ export function LogsPageClient({ taskLogs, deductionLogs }: LogsPageClientProps)
   const { t } = useTranslation('logs');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <h1 className="md-headline-large text-[var(--md-on-surface)]">{t('title')}</h1>
 
       {/* Task Logs */}
       <Card>
         <CardHeader>
-          <CardTitle>{t('taskHistory')} 💰</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Icon name="savings" className="text-[var(--md-primary)]" />
+            {t('taskHistory')}
+          </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="overflow-x-auto">
           {taskLogs.length === 0 ? (
             <p className="md-body-medium text-[var(--md-on-surface-variant)] text-center py-4">
               {t('noTaskHistory')}
@@ -71,9 +75,12 @@ export function LogsPageClient({ taskLogs, deductionLogs }: LogsPageClientProps)
       {/* Deduction Logs */}
       <Card>
         <CardHeader>
-          <CardTitle>{t('deductionHistory')} 📉</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Icon name="trending_down" className="text-[var(--md-error)]" />
+            {t('deductionHistory')}
+          </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="overflow-x-auto">
           {deductionLogs.length === 0 ? (
             <p className="md-body-medium text-[var(--md-on-surface-variant)] text-center py-4">
               {t('noDeductionHistory')}

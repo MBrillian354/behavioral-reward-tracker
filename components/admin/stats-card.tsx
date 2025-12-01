@@ -1,4 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
+import { Icon } from '@/components/ui/icon';
 import { formatRupiah } from '@/lib/utils/currency';
 
 interface StatsCardProps {
@@ -23,7 +24,9 @@ export function StatsCard({ title, value, isCurrency = false, icon, subtitle }: 
               <p className="md-body-small text-[var(--md-on-surface-variant)] mt-1">{subtitle}</p>
             )}
           </div>
-          <div className="text-3xl">{icon}</div>
+          <div className="w-12 h-12 rounded-full bg-[var(--md-primary-container)] flex items-center justify-center">
+            <Icon name={icon} className="text-[var(--md-on-primary-container)]" size="large" />
+          </div>
         </div>
       </CardContent>
     </Card>

@@ -2,6 +2,7 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { ProgressBar } from '@/components/ui/progress-bar';
+import { Icon } from '@/components/ui/icon';
 import { formatRupiah } from '@/lib/utils/currency';
 import { Deduction, User } from '@/lib/supabase/types';
 import { DebtSettingsForm } from './debt-settings-form';
@@ -25,7 +26,7 @@ export function StudentPageClient({ student, adminId, stats, deductions, remaini
   const { t } = useTranslation('studentManagement');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <h1 className="md-headline-large text-[var(--md-on-surface)]">{t('title')}</h1>
 
       {/* Student Profile */}
@@ -37,7 +38,7 @@ export function StudentPageClient({ student, adminId, stats, deductions, remaini
           <div className="space-y-4">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 rounded-full bg-[var(--md-primary-container)] flex items-center justify-center">
-                <span className="text-2xl">👤</span>
+                <Icon name="person" size="xlarge" className="text-[var(--md-on-primary-container)]" />
               </div>
               <div>
                 <p className="md-title-large text-[var(--md-on-surface)]">{student.display_name}</p>
@@ -61,20 +62,20 @@ export function StudentPageClient({ student, adminId, stats, deductions, remaini
               size="large"
             />
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center p-4 rounded-lg bg-[var(--md-surface-container)]">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+              <div className="text-center p-3 sm:p-4 rounded-lg bg-[var(--md-surface-container)]">
                 <p className="md-label-medium text-[var(--md-on-surface-variant)]">{t('totalDebt')}</p>
                 <p className="md-title-medium text-[var(--md-on-surface)]">{formatRupiah(stats.totalDebt)}</p>
               </div>
-              <div className="text-center p-4 rounded-lg bg-[var(--md-surface-container)]">
+              <div className="text-center p-3 sm:p-4 rounded-lg bg-[var(--md-surface-container)]">
                 <p className="md-label-medium text-[var(--md-on-surface-variant)]">{t('totalEarnings')}</p>
                 <p className="md-title-medium text-[var(--md-primary)]">{formatRupiah(stats.totalEarnings)}</p>
               </div>
-              <div className="text-center p-4 rounded-lg bg-[var(--md-surface-container)]">
+              <div className="text-center p-3 sm:p-4 rounded-lg bg-[var(--md-surface-container)]">
                 <p className="md-label-medium text-[var(--md-on-surface-variant)]">{t('totalDeductions')}</p>
                 <p className="md-title-medium text-[var(--md-error)]">-{formatRupiah(stats.totalDeductions)}</p>
               </div>
-              <div className="text-center p-4 rounded-lg bg-[var(--md-surface-container)]">
+              <div className="text-center p-3 sm:p-4 rounded-lg bg-[var(--md-surface-container)]">
                 <p className="md-label-medium text-[var(--md-on-surface-variant)]">{t('remainingDebt')}</p>
                 <p className="md-title-medium text-[var(--md-on-surface)]">{formatRupiah(remaining)}</p>
               </div>
@@ -84,7 +85,7 @@ export function StudentPageClient({ student, adminId, stats, deductions, remaini
       </Card>
 
       {/* Admin Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
         <DebtSettingsForm userId={student.id} currentDebt={stats.totalDebt} />
         <ApplyDeductionForm 
           studentId={student.id} 
