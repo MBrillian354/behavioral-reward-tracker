@@ -2,6 +2,7 @@
 
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Icon } from '@/components/ui/icon';
 import { formatRupiah } from '@/lib/utils/currency';
 import { formatDateIndonesian, toDateString } from '@/lib/utils/dates';
 import { TaskLogWithTask, DeductionLogWithDeduction } from '@/lib/supabase/types';
@@ -19,7 +20,7 @@ export function HistoryPageClient({ weekDates, today, logsByDate, sortedDates }:
   const { t: tLogs } = useTranslation('logs');
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
         <h1 className="md-headline-large text-[var(--md-on-surface)]">{t('title')}</h1>
         <p className="md-body-medium text-[var(--md-on-surface-variant)] mt-2">
@@ -33,7 +34,7 @@ export function HistoryPageClient({ weekDates, today, logsByDate, sortedDates }:
           <CardTitle>{t('thisWeek')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-7 gap-2">
+          <div className="grid grid-cols-7 gap-1 sm:gap-2">
             {weekDates.map((date) => {
               const dateStr = toDateString(date);
               const dayData = logsByDate[dateStr];
@@ -45,7 +46,7 @@ export function HistoryPageClient({ weekDates, today, logsByDate, sortedDates }:
               return (
                 <div 
                   key={dateStr}
-                  className={`p-2 rounded-lg text-center ${
+                  className={`p-1 sm:p-2 rounded-lg text-center ${
                     isToday 
                       ? 'bg-[var(--md-primary-container)] border-2 border-[var(--md-primary)]' 
                       : hasActivity
@@ -54,7 +55,7 @@ export function HistoryPageClient({ weekDates, today, logsByDate, sortedDates }:
                   }`}
                 >
                   <p className="md-label-small text-[var(--md-on-surface-variant)]">
-                    {date.toLocaleDateString('id-ID', { weekday: 'short' })}
+                    {date.toLocaleDateString('id-ID', { weekday: 'short' }).slice(0, 2)}
                   </p>
                   <p className={`md-title-small ${isToday ? 'text-[var(--md-on-primary-container)]' : ''}`}>
                     {date.getDate()}
@@ -91,8 +92,8 @@ export function HistoryPageClient({ weekDates, today, logsByDate, sortedDates }:
             return (
               <Card key={dateStr}>
                 <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <CardTitle>
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <CardTitle className="text-base sm:text-lg">
                       {formatDateIndonesian(new Date(dateStr), {
                         weekday: 'long',
                         day: 'numeric',
@@ -113,7 +114,7 @@ export function HistoryPageClient({ weekDates, today, logsByDate, sortedDates }:
                         className="flex justify-between items-center py-2 border-b border-[var(--md-outline-variant)] last:border-0"
                       >
                         <div className="flex items-center gap-2">
-                          <span className="text-green-600">✓</span>
+                          <Icon name="check_circle" size="small" className="text-[var(--md-primary)]" />
                           <span className="md-body-medium">{log.task?.name || tLogs('taskDeleted')}</span>
                           {log.quantity > 1 && (
                             <Badge variant="default" size="small">x{log.quantity}</Badge>
@@ -132,7 +133,7 @@ export function HistoryPageClient({ weekDates, today, logsByDate, sortedDates }:
                         className="flex justify-between items-center py-2 border-b border-[var(--md-outline-variant)] last:border-0"
                       >
                         <div className="flex items-center gap-2">
-                          <span className="text-red-600">✗</span>
+                          <Icon name="cancel" size="small" className="text-[var(--md-error)]" />
                           <span className="md-body-medium">{log.deduction?.name || log.reason}</span>
                         </div>
                         <span className="md-label-medium text-[var(--md-error)]">

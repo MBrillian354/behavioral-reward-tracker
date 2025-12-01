@@ -11,7 +11,7 @@ export default async function AdminLayout({
   return (
     <div className="min-h-screen bg-[var(--md-surface)]">
       <Navbar role={session.role} displayName={session.displayName} />
-      <main className="max-w-7xl mx-auto px-4 py-6">
+      <main className="max-w-7xl mx-auto px-4 py-4 sm:py-6 pb-nav sm:pb-6">
         {children}
       </main>
     </div>

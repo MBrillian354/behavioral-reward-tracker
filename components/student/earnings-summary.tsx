@@ -1,6 +1,7 @@
 'use client';
 
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Icon } from '@/components/ui/icon';
 import { formatRupiah } from '@/lib/utils/currency';
 import { useTranslation } from '@/lib/i18n';
 
@@ -23,7 +24,8 @@ export function EarningsSummary({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          💰 {t('title')}
+          <Icon name="savings" className="text-[var(--md-primary)]" />
+          {t('title')}
         </CardTitle>
       </CardHeader>
       <CardContent>

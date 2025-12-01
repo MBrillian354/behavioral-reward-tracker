@@ -1,10 +1,24 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "Reward Tracker - Pelacak Reward Perilaku",
   description: "Sistem pelacak reward dan punishment untuk membangun kebiasaan baik",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Reward Tracker",
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -14,6 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id">
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap"
+        />
+      </head>
       <body className="antialiased bg-[var(--md-surface)]">
         <LanguageProvider>
           {children}

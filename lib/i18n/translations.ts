@@ -264,24 +264,24 @@ export const translations = {
       en: 'Total',
     },
     congratulations: {
-      id: '🎉 Selamat! Utang sudah lunas!',
-      en: '🎉 Congratulations! Debt is fully paid!',
+      id: 'Selamat! Utang sudah lunas!',
+      en: 'Congratulations! Debt is fully paid!',
     },
     almostDone: {
-      id: '💪 Hampir selesai! Terus semangat!',
-      en: '💪 Almost done! Keep going!',
+      id: 'Hampir selesai! Terus semangat!',
+      en: 'Almost done! Keep going!',
     },
     halfwayThere: {
-      id: '🌟 Sudah setengah jalan! Pertahankan!',
-      en: '🌟 Halfway there! Keep it up!',
+      id: 'Sudah setengah jalan! Pertahankan!',
+      en: 'Halfway there! Keep it up!',
     },
     goodProgress: {
-      id: '🚀 Progresnya bagus! Lanjutkan!',
-      en: '🚀 Great progress! Continue!',
+      id: 'Progresnya bagus! Lanjutkan!',
+      en: 'Great progress! Continue!',
     },
     startSmall: {
-      id: '✨ Mulailah dengan langkah kecil!',
-      en: '✨ Start with small steps!',
+      id: 'Mulailah dengan langkah kecil!',
+      en: 'Start with small steps!',
     },
   },
 
@@ -732,12 +732,12 @@ export const translations = {
       en: 'Deduction',
     },
     reportSent: {
-      id: '✓ Laporan berhasil dikirim',
-      en: '✓ Report sent successfully',
+      id: 'Laporan berhasil dikirim',
+      en: 'Report sent successfully',
     },
     thankYou: {
-      id: 'Terima kasih atas kejujuranmu! 💪',
-      en: 'Thank you for your honesty! 💪',
+      id: 'Terima kasih atas kejujuranmu!',
+      en: 'Thank you for your honesty!',
     },
     selectFirst: {
       id: 'Pilih jenis kesalahan terlebih dahulu',
