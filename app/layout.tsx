@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { LanguageProvider } from "@/lib/i18n";
 
 export const metadata: Metadata = {
   title: "Reward Tracker - Pelacak Reward Perilaku",
@@ -14,7 +15,9 @@ export default function RootLayout({
   return (
     <html lang="id">
       <body className="antialiased bg-[var(--md-surface)]">
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

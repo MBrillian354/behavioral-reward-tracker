@@ -5,10 +5,13 @@ import { login } from '@/lib/actions/auth';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from '@/lib/i18n';
+import { LanguageSwitch } from '@/components/shared/language-switch';
 
 export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation('login');
 
   async function handleSubmit(formData: FormData) {
     setLoading(true);
@@ -26,10 +29,13 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-[var(--md-surface)] p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
+          <div className="flex justify-end mb-2">
+            <LanguageSwitch />
+          </div>
           <div className="text-5xl mb-4">🏆</div>
-          <CardTitle className="md-headline-medium">Reward Tracker</CardTitle>
+          <CardTitle className="md-headline-medium">{t('title')}</CardTitle>
           <p className="md-body-medium text-[var(--md-on-surface-variant)] mt-2">
-            Masukkan PIN untuk melanjutkan
+            {t('subtitle')}
           </p>
         </CardHeader>
         <CardContent>
@@ -37,7 +43,7 @@ export default function LoginPage() {
             <Input
               type="password"
               name="pin"
-              placeholder="Masukkan PIN"
+              placeholder={t('pinPlaceholder')}
               maxLength={6}
               minLength={4}
               required
@@ -59,14 +65,14 @@ export default function LoginPage() {
               size="large"
               disabled={loading}
             >
-              {loading ? 'Memproses...' : 'Masuk'}
+              {loading ? t('loginLoading') : t('loginButton')}
             </Button>
           </form>
           
           <div className="mt-6 pt-6 border-t border-[var(--md-outline-variant)]">
             <p className="md-body-small text-[var(--md-on-surface-variant)] text-center">
-              PIN untuk testing:<br />
-              Admin: 123456 | Siswa: 111111
+              {t('testPinInfo')}<br />
+              {t('testPinAdmin')} | {t('testPinStudent')}
             </p>
           </div>
         </CardContent>

@@ -1,3 +1,7 @@
+'use client';
+
+import { useTranslation } from '@/lib/i18n';
+
 interface StreakBadgeProps {
   streak: number;
   requiredDays?: number | null;
@@ -5,10 +9,12 @@ interface StreakBadgeProps {
 }
 
 export function StreakBadge({ streak, requiredDays, showProgress = true }: StreakBadgeProps) {
+  const { t } = useTranslation('common');
+
   if (streak === 0) {
     return (
       <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-[var(--md-surface-container-high)] text-[var(--md-on-surface-variant)]">
-        🔥 0 hari
+        🔥 0 {t('days')}
       </span>
     );
   }
@@ -27,9 +33,9 @@ export function StreakBadge({ streak, requiredDays, showProgress = true }: Strea
         }
       `}
     >
-      🔥 {streak} hari
+      🔥 {streak} {t('days')}
       {showProgress && requiredDays && !isStreakComplete && (
-        <span className="opacity-70">({remaining} lagi)</span>
+        <span className="opacity-70">({remaining} {t('more')})</span>
       )}
       {isStreakComplete && progress === 0 && (
         <span>✨</span>

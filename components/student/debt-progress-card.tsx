@@ -1,6 +1,9 @@
+'use client';
+
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { formatRupiah } from '@/lib/utils/currency';
 import { calculateRemainingDebt, calculateProgress, calculateNetEarnings } from '@/lib/utils/earnings';
+import { useTranslation } from '@/lib/i18n';
 
 interface DebtProgressCardProps {
   totalDebt: number;
@@ -13,12 +16,13 @@ export function DebtProgressCard({ totalDebt, totalEarnings, totalDeductions }: 
   const progress = calculateProgress(totalDebt, totalEarnings, totalDeductions);
   const netEarnings = calculateNetEarnings(totalEarnings, totalDeductions);
   const paid = netEarnings > 0 ? netEarnings : 0;
+  const { t } = useTranslation('debtProgress');
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          🎯 Progress Pelunasan
+          🎯 {t('title')}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -40,15 +44,15 @@ export function DebtProgressCard({ totalDebt, totalEarnings, totalDeductions }: 
           {/* Stats */}
           <div className="grid grid-cols-3 gap-4 text-center">
             <div className="p-3 rounded-lg bg-[var(--md-primary-container)]">
-              <p className="md-label-small text-[var(--md-on-primary-container)]">Terbayar</p>
+              <p className="md-label-small text-[var(--md-on-primary-container)]">{t('paid')}</p>
               <p className="md-title-small text-[var(--md-on-primary-container)]">{formatRupiah(paid)}</p>
             </div>
             <div className="p-3 rounded-lg bg-[var(--md-surface-container)]">
-              <p className="md-label-small text-[var(--md-on-surface-variant)]">Sisa</p>
+              <p className="md-label-small text-[var(--md-on-surface-variant)]">{t('remaining')}</p>
               <p className="md-title-small text-[var(--md-on-surface)]">{formatRupiah(remaining)}</p>
             </div>
             <div className="p-3 rounded-lg bg-[var(--md-surface-container)]">
-              <p className="md-label-small text-[var(--md-on-surface-variant)]">Total</p>
+              <p className="md-label-small text-[var(--md-on-surface-variant)]">{t('total')}</p>
               <p className="md-title-small text-[var(--md-on-surface)]">{formatRupiah(totalDebt)}</p>
             </div>
           </div>
@@ -57,24 +61,24 @@ export function DebtProgressCard({ totalDebt, totalEarnings, totalDeductions }: 
           {progress >= 100 ? (
             <div className="p-4 rounded-lg bg-[var(--md-primary-container)] text-center">
               <p className="md-title-medium text-[var(--md-on-primary-container)]">
-                🎉 Selamat! Utang sudah lunas!
+                {t('congratulations')}
               </p>
             </div>
           ) : progress >= 75 ? (
             <p className="md-body-medium text-[var(--md-on-surface-variant)] text-center">
-              💪 Hampir selesai! Terus semangat!
+              {t('almostDone')}
             </p>
           ) : progress >= 50 ? (
             <p className="md-body-medium text-[var(--md-on-surface-variant)] text-center">
-              🌟 Sudah setengah jalan! Pertahankan!
+              {t('halfwayThere')}
             </p>
           ) : progress >= 25 ? (
             <p className="md-body-medium text-[var(--md-on-surface-variant)] text-center">
-              🚀 Progresnya bagus! Lanjutkan!
+              {t('goodProgress')}
             </p>
           ) : (
             <p className="md-body-medium text-[var(--md-on-surface-variant)] text-center">
-              ✨ Mulailah dengan langkah kecil!
+              {t('startSmall')}
             </p>
           )}
         </div>

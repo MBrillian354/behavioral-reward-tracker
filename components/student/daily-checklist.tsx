@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { StreakBadge } from '@/components/shared/streak-badge';
-import { Task, TaskLog, categoryLabels } from '@/lib/supabase/types';
+import { Task, TaskLog } from '@/lib/supabase/types';
 import { formatRupiah } from '@/lib/utils/currency';
 import { createTaskLog } from '@/lib/actions/logs';
+import { useTranslation } from '@/lib/i18n';
 
 interface DailyChecklistProps {
   tasks: Task[];
@@ -25,6 +26,9 @@ export function DailyChecklist({ tasks, existingLogs, userId, date, streaks }: D
   const [taskStates, setTaskStates] = useState<Record<string, TaskState>>({});
   const [loading, setLoading] = useState<string | null>(null);
   const [saved, setSaved] = useState<string | null>(null);
+  const { t } = useTranslation('tracker');
+  const { t: tCommon } = useTranslation('common');
+  const { t: tCategories } = useTranslation('categories');
 
   // Group tasks by category
   const tasksByCategory = tasks.reduce((acc, task) => {
@@ -102,13 +106,18 @@ export function DailyChecklist({ tasks, existingLogs, userId, date, streaks }: D
     return sum;
   }, 0);
 
+  // Get category label based on language
+  const getCategoryLabel = (category: string) => {
+    return tCategories(category as 'daily_routine' | 'self_improvement' | 'household' | 'social_emotional');
+  };
+
   return (
     <div className="space-y-6">
       {/* Today's Summary */}
       <Card variant="filled">
         <CardContent className="py-4">
           <div className="flex items-center justify-between">
-            <span className="md-title-medium text-[var(--md-on-surface)]">Pendapatan Hari Ini</span>
+            <span className="md-title-medium text-[var(--md-on-surface)]">{t('todayEarnings')}</span>
             <span className="md-headline-small text-[var(--md-primary)]">{formatRupiah(todayEarned)}</span>
           </div>
         </CardContent>
@@ -123,7 +132,7 @@ export function DailyChecklist({ tasks, existingLogs, userId, date, streaks }: D
               {category === 'self_improvement' && '📚'}
               {category === 'household' && '🏠'}
               {category === 'social_emotional' && '💝'}
-              {categoryLabels[category as keyof typeof categoryLabels]}
+              {getCategoryLabel(category)}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -165,7 +174,7 @@ export function DailyChecklist({ tasks, existingLogs, userId, date, streaks }: D
                             <StreakBadge streak={streak} requiredDays={task.streak_days} />
                           )}
                           {isSaved && (
-                            <Badge variant="success" size="small">✓ Tersimpan</Badge>
+                            <Badge variant="success" size="small">✓ {tCommon('saved')}</Badge>
                           )}
                         </div>
                         
@@ -182,7 +191,7 @@ export function DailyChecklist({ tasks, existingLogs, userId, date, streaks }: D
                           </Badge>
                           {task.streak_bonus && task.streak_days && (
                             <Badge variant="warning" size="small">
-                              +{formatRupiah(task.streak_bonus)} @ {task.streak_days} hari
+                              +{formatRupiah(task.streak_bonus)} @ {task.streak_days} {tCommon('days')}
                             </Badge>
                           )}
                         </div>

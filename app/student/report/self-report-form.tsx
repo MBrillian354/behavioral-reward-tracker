@@ -8,6 +8,7 @@ import { Deduction } from '@/lib/supabase/types';
 import { formatRupiah } from '@/lib/utils/currency';
 import { createDeductionLog } from '@/lib/actions/logs';
 import { toDateString } from '@/lib/utils/dates';
+import { useTranslation } from '@/lib/i18n';
 
 interface SelfReportFormProps {
   deductions: Deduction[];
@@ -20,6 +21,8 @@ export function SelfReportForm({ deductions, userId }: SelfReportFormProps) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation('selfReport');
+  const { t: tCommon } = useTranslation('common');
 
   const selectedDeduction = deductions.find((d) => d.id === selectedId);
 
@@ -27,7 +30,7 @@ export function SelfReportForm({ deductions, userId }: SelfReportFormProps) {
     e.preventDefault();
     
     if (!selectedDeduction) {
-      setError('Pilih jenis kesalahan terlebih dahulu');
+      setError(t('selectFirst'));
       return;
     }
 
@@ -50,7 +53,7 @@ export function SelfReportForm({ deductions, userId }: SelfReportFormProps) {
       setNotes('');
       setTimeout(() => setSuccess(false), 3000);
     } else {
-      setError(result.error || 'Terjadi kesalahan');
+      setError(result.error || tCommon('error'));
     }
 
     setLoading(false);
@@ -59,7 +62,7 @@ export function SelfReportForm({ deductions, userId }: SelfReportFormProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Pilih Jenis Kesalahan</CardTitle>
+        <CardTitle>{t('selectMistakeType')}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -95,10 +98,10 @@ export function SelfReportForm({ deductions, userId }: SelfReportFormProps) {
           {selectedId && (
             <Input
               name="notes"
-              label="Catatan (opsional)"
+              label={t('notesOptional')}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              placeholder="Tambahkan penjelasan jika perlu..."
+              placeholder={t('notesPlaceholder')}
             />
           )}
 
@@ -106,10 +109,10 @@ export function SelfReportForm({ deductions, userId }: SelfReportFormProps) {
           {selectedDeduction && (
             <div className="p-4 rounded-lg bg-[var(--md-error-container)]">
               <p className="md-body-medium text-[var(--md-on-error-container)]">
-                Anda akan melaporkan: <strong>{selectedDeduction.name}</strong>
+                {t('willReport')}: <strong>{selectedDeduction.name}</strong>
               </p>
               <p className="md-title-medium text-[var(--md-on-error-container)] mt-1">
-                Potongan: -{formatRupiah(selectedDeduction.amount)}
+                {t('deductionAmount')}: -{formatRupiah(selectedDeduction.amount)}
               </p>
             </div>
           )}
@@ -118,10 +121,10 @@ export function SelfReportForm({ deductions, userId }: SelfReportFormProps) {
           {success && (
             <div className="p-4 rounded-lg bg-[var(--md-primary-container)] text-center">
               <p className="md-title-medium text-[var(--md-on-primary-container)]">
-                ✓ Laporan berhasil dikirim
+                {t('reportSent')}
               </p>
               <p className="md-body-small text-[var(--md-on-primary-container)] mt-1">
-                Terima kasih atas kejujuranmu! 💪
+                {t('thankYou')}
               </p>
             </div>
           )}
@@ -138,7 +141,7 @@ export function SelfReportForm({ deductions, userId }: SelfReportFormProps) {
             disabled={!selectedId || loading}
             className="w-full"
           >
-            {loading ? 'Mengirim...' : 'Kirim Laporan'}
+            {loading ? t('sending') : t('sendReport')}
           </Button>
         </form>
       </CardContent>

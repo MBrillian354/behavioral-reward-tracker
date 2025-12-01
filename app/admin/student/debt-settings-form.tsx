@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { updateDebtSettings } from '@/lib/actions/student';
 import { formatRupiah } from '@/lib/utils/currency';
+import { useTranslation } from '@/lib/i18n';
 
 interface DebtSettingsFormProps {
   userId: string;
@@ -16,6 +17,8 @@ export function DebtSettingsForm({ userId, currentDebt }: DebtSettingsFormProps)
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation('studentManagement');
+  const { t: tCommon } = useTranslation('common');
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -31,7 +34,7 @@ export function DebtSettingsForm({ userId, currentDebt }: DebtSettingsFormProps)
     if (result.success) {
       setSuccess(true);
     } else {
-      setError(result.error || 'Terjadi kesalahan');
+      setError(result.error || tCommon('error'));
     }
     setLoading(false);
   }
@@ -39,14 +42,14 @@ export function DebtSettingsForm({ userId, currentDebt }: DebtSettingsFormProps)
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Pengaturan Utang</CardTitle>
+        <CardTitle>{t('debtSettings')}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             name="total_debt"
             type="number"
-            label="Total Utang (Rp)"
+            label={t('totalDebtAmount')}
             required
             min={0}
             defaultValue={currentDebt}
@@ -54,12 +57,12 @@ export function DebtSettingsForm({ userId, currentDebt }: DebtSettingsFormProps)
           />
 
           <p className="md-body-small text-[var(--md-on-surface-variant)]">
-            Saat ini: {formatRupiah(currentDebt)}
+            {t('currentAmount')}: {formatRupiah(currentDebt)}
           </p>
 
           {success && (
             <div className="p-3 rounded-lg bg-[var(--md-primary-container)] text-[var(--md-on-primary-container)] md-body-medium">
-              Berhasil memperbarui pengaturan utang!
+              {t('updateSuccess')}
             </div>
           )}
 
@@ -70,7 +73,7 @@ export function DebtSettingsForm({ userId, currentDebt }: DebtSettingsFormProps)
           )}
 
           <Button type="submit" disabled={loading}>
-            {loading ? 'Menyimpan...' : 'Perbarui Utang'}
+            {loading ? tCommon('saving') : t('updateDebt')}
           </Button>
         </form>
       </CardContent>
