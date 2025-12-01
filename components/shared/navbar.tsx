@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { UserRole } from '@/lib/supabase/types';
+import { useTranslation } from '@/lib/i18n';
+import { LanguageSwitch } from './language-switch';
 
 interface NavbarProps {
   role: UserRole;
@@ -11,20 +13,21 @@ interface NavbarProps {
 
 export function Navbar({ role, displayName }: NavbarProps) {
   const pathname = usePathname();
+  const { t } = useTranslation('nav');
   
   const adminLinks = [
-    { href: '/admin', label: 'Dasbor' },
-    { href: '/admin/tasks', label: 'Tugas' },
-    { href: '/admin/deductions', label: 'Deduksi' },
-    { href: '/admin/student', label: 'Siswa' },
-    { href: '/admin/logs', label: 'Riwayat' },
+    { href: '/admin', label: t('dashboard') },
+    { href: '/admin/tasks', label: t('tasks') },
+    { href: '/admin/deductions', label: t('deductions') },
+    { href: '/admin/student', label: t('student') },
+    { href: '/admin/logs', label: t('history') },
   ];
   
   const studentLinks = [
-    { href: '/student', label: 'Dasbor' },
-    { href: '/student/tracker', label: 'Pelacak' },
-    { href: '/student/report', label: 'Lapor' },
-    { href: '/student/history', label: 'Riwayat' },
+    { href: '/student', label: t('dashboard') },
+    { href: '/student/tracker', label: t('tracker') },
+    { href: '/student/report', label: t('report') },
+    { href: '/student/history', label: t('history') },
   ];
   
   const links = role === 'admin' ? adminLinks : studentLinks;
@@ -66,6 +69,7 @@ export function Navbar({ role, displayName }: NavbarProps) {
           </div>
           
           <div className="flex items-center gap-4">
+            <LanguageSwitch />
             <span className="md-body-medium text-[var(--md-on-surface-variant)]">
               {displayName}
             </span>
@@ -74,7 +78,7 @@ export function Navbar({ role, displayName }: NavbarProps) {
                 type="submit"
                 className="px-4 py-2 rounded-full md-label-large text-[var(--md-error)] hover:bg-[var(--md-error)]/8 transition-colors"
               >
-                Keluar
+                {t('logout')}
               </button>
             </form>
           </div>

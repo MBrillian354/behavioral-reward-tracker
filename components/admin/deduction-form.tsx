@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { createDeduction, updateDeduction } from '@/lib/actions/deductions';
 import { Deduction } from '@/lib/supabase/types';
+import { useTranslation } from '@/lib/i18n';
 
 interface DeductionFormProps {
   deduction?: Deduction;
@@ -18,6 +19,8 @@ export function DeductionForm({ deduction, userId }: DeductionFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { t } = useTranslation('deductionsPage');
+  const { t: tCommon } = useTranslation('common');
   
   const isEditing = !!deduction;
 
@@ -52,7 +55,7 @@ export function DeductionForm({ deduction, userId }: DeductionFormProps) {
     if (result.success) {
       router.push('/admin/deductions');
     } else {
-      setError(result.error || 'Terjadi kesalahan');
+      setError(result.error || tCommon('error'));
       setLoading(false);
     }
   }
@@ -60,22 +63,22 @@ export function DeductionForm({ deduction, userId }: DeductionFormProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{isEditing ? 'Edit Deduksi' : 'Tambah Deduksi Baru'}</CardTitle>
+        <CardTitle>{isEditing ? t('editDeduction') : t('addNewDeduction')}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Input
             name="name"
-            label="Nama Deduksi"
+            label={t('deductionName')}
             required
             defaultValue={deduction?.name}
-            placeholder="Contoh: Berbohong"
+            placeholder={t('deductionNamePlaceholder')}
           />
 
           <Input
             name="amount"
             type="number"
-            label="Jumlah Potongan (Rp)"
+            label={t('deductionAmount')}
             required
             min={0}
             defaultValue={deduction?.amount}
@@ -84,18 +87,18 @@ export function DeductionForm({ deduction, userId }: DeductionFormProps) {
 
           <Input
             name="description"
-            label="Deskripsi (opsional)"
+            label={t('descriptionOptional')}
             defaultValue={deduction?.description || ''}
-            placeholder="Deskripsi deduksi..."
+            placeholder={t('descriptionPlaceholder')}
           />
 
           {isEditing && (
             <Select
               name="is_active"
-              label="Status"
+              label={t('status')}
               options={[
-                { value: 'true', label: 'Aktif' },
-                { value: 'false', label: 'Tidak Aktif' },
+                { value: 'true', label: tCommon('active') },
+                { value: 'false', label: tCommon('inactive') },
               ]}
               defaultValue={deduction.is_active ? 'true' : 'false'}
             />
@@ -109,14 +112,14 @@ export function DeductionForm({ deduction, userId }: DeductionFormProps) {
 
           <div className="flex gap-3 pt-4">
             <Button type="submit" disabled={loading}>
-              {loading ? 'Menyimpan...' : isEditing ? 'Simpan Perubahan' : 'Tambah Deduksi'}
+              {loading ? tCommon('saving') : isEditing ? t('saveChanges') : t('addDeduction')}
             </Button>
             <Button 
               type="button" 
               variant="outlined"
               onClick={() => router.push('/admin/deductions')}
             >
-              Batal
+              {tCommon('cancel')}
             </Button>
           </div>
         </form>

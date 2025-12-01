@@ -1,10 +1,9 @@
-import { Card, CardContent } from '@/components/ui/card';
 import { requireRole } from '@/lib/actions/auth';
 import { getTasks } from '@/lib/actions/tasks';
 import { getTaskLogsForDate, getTaskLogs } from '@/lib/actions/logs';
-import { DailyChecklist } from '@/components/student/daily-checklist';
-import { formatDateIndonesian, toDateString } from '@/lib/utils/dates';
+import { toDateString } from '@/lib/utils/dates';
 import { calculateStreak } from '@/lib/utils/streak';
+import { TrackerPageClient } from './tracker-page-client';
 
 export default async function StudentTrackerPage() {
   const session = await requireRole('student');
@@ -26,38 +25,13 @@ export default async function StudentTrackerPage() {
   });
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="md-headline-large text-[var(--md-on-surface)]">Pelacak Harian</h1>
-      </div>
-
-      {/* Today's Date */}
-      <Card variant="filled">
-        <CardContent className="py-4 text-center">
-          <span className="text-3xl mb-2 block">📅</span>
-          <p className="md-title-large text-[var(--md-on-surface)]">
-            {formatDateIndonesian(today)}
-          </p>
-        </CardContent>
-      </Card>
-
-      {tasks.length === 0 ? (
-        <Card>
-          <CardContent className="py-8 text-center">
-            <p className="md-body-large text-[var(--md-on-surface-variant)]">
-              Belum ada tugas yang tersedia. Hubungi admin untuk menambahkan tugas.
-            </p>
-          </CardContent>
-        </Card>
-      ) : (
-        <DailyChecklist
-          tasks={tasks}
-          existingLogs={todayLogs}
-          userId={session.userId}
-          date={dateStr}
-          streaks={streaks}
-        />
-      )}
-    </div>
+    <TrackerPageClient
+      tasks={tasks}
+      todayLogs={todayLogs}
+      userId={session.userId}
+      dateStr={dateStr}
+      streaks={streaks}
+      today={today}
+    />
   );
 }

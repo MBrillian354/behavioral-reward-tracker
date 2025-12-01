@@ -9,6 +9,7 @@ import { createDeductionLog } from '@/lib/actions/logs';
 import { Deduction } from '@/lib/supabase/types';
 import { formatRupiah } from '@/lib/utils/currency';
 import { toDateString } from '@/lib/utils/dates';
+import { useTranslation } from '@/lib/i18n';
 
 interface ApplyDeductionFormProps {
   studentId: string;
@@ -22,6 +23,8 @@ export function ApplyDeductionForm({ studentId, adminId, deductions }: ApplyDedu
   const [error, setError] = useState<string | null>(null);
   const [selectedDeduction, setSelectedDeduction] = useState<string>('');
   const [customAmount, setCustomAmount] = useState<string>('');
+  const { t } = useTranslation('studentManagement');
+  const { t: tCommon } = useTranslation('common');
 
   const selected = deductions.find(d => d.id === selectedDeduction);
 
@@ -42,7 +45,7 @@ export function ApplyDeductionForm({ studentId, adminId, deductions }: ApplyDedu
     } else if (selected) {
       amount = selected.amount;
     } else {
-      setError('Pilih deduksi terlebih dahulu');
+      setError(t('selectDeductionFirst'));
       setLoading(false);
       return;
     }
@@ -62,7 +65,7 @@ export function ApplyDeductionForm({ studentId, adminId, deductions }: ApplyDedu
       setCustomAmount('');
       (e.target as HTMLFormElement).reset();
     } else {
-      setError(result.error || 'Terjadi kesalahan');
+      setError(result.error || tCommon('error'));
     }
     setLoading(false);
   }
@@ -72,31 +75,31 @@ export function ApplyDeductionForm({ studentId, adminId, deductions }: ApplyDedu
       value: d.id,
       label: `${d.name} (-${formatRupiah(d.amount)})`,
     })),
-    { value: 'custom', label: 'Jumlah Kustom' },
+    { value: 'custom', label: t('customAmount') },
   ];
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Terapkan Deduksi</CardTitle>
+        <CardTitle>{t('applyDeduction')}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           <Select
             name="deduction_id"
-            label="Pilih Deduksi"
+            label={t('selectDeduction')}
             options={deductionOptions}
             required
             value={selectedDeduction}
             onChange={(e) => setSelectedDeduction(e.target.value)}
-            placeholder="Pilih deduksi..."
+            placeholder={t('selectDeductionPlaceholder')}
           />
 
           {selectedDeduction === 'custom' && (
             <Input
               name="custom_amount"
               type="number"
-              label="Jumlah Kustom (Rp)"
+              label={t('customAmountLabel')}
               required
               min={0}
               value={customAmount}
@@ -108,21 +111,21 @@ export function ApplyDeductionForm({ studentId, adminId, deductions }: ApplyDedu
           <Input
             name="date"
             type="date"
-            label="Tanggal"
+            label={t('dateLabel')}
             required
             defaultValue={toDateString(new Date())}
           />
 
           <Input
             name="reason"
-            label="Alasan"
+            label={t('reasonLabel')}
             required
-            placeholder="Alasan deduksi..."
+            placeholder={t('reasonPlaceholder')}
           />
 
           {success && (
             <div className="p-3 rounded-lg bg-[var(--md-primary-container)] text-[var(--md-on-primary-container)] md-body-medium">
-              Deduksi berhasil diterapkan!
+              {t('deductionApplied')}
             </div>
           )}
 
@@ -133,7 +136,7 @@ export function ApplyDeductionForm({ studentId, adminId, deductions }: ApplyDedu
           )}
 
           <Button type="submit" disabled={loading}>
-            {loading ? 'Menerapkan...' : 'Terapkan Deduksi'}
+            {loading ? t('applying') : t('apply')}
           </Button>
         </form>
       </CardContent>
